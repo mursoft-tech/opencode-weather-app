@@ -6,6 +6,11 @@ out
 dist
 *.tgz
 
+# weather cli
+weather
+weather.exe
+weather-data.json
+
 # code coverage
 coverage
 *.lcov
