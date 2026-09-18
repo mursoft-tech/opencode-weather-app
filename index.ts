@@ -1,6 +1,6 @@
-import { geocode, getWeather } from "./src/api.ts";
+import { geocode, getForecast, getWeather } from "./src/api.ts";
 import { loadConfig, saveConfig } from "./src/storage.ts";
-import { ask, pause, printError, printSuccess, renderMenu, unitSymbol, yellow } from "./src/ui.ts";
+import { ask, pause, printError, printSuccess, renderForecast, renderMenu, unitSymbol, yellow } from "./src/ui.ts";
 import type { City, Config } from "./src/types.ts";
 
 function formatCity(city: City): string {
@@ -27,22 +27,57 @@ async function showWeather(city: City, config: Config): Promise<void> {
   }
 }
 
-async function weatherDefault(config: Config): Promise<void> {
+function resolveDefaultCity(config: Config): City | undefined {
   if (!config.defaultCity) {
-    printError("No hay una ciudad default. Usa la opción 5 para establecerla.");
-    return;
+    printError("No hay una ciudad default. Usa la opción 4 para establecerla.");
+    return undefined;
   }
   const city = findCity(config, config.defaultCity);
   if (!city) {
     printError(`La ciudad default "${config.defaultCity}" ya no existe en la lista.`);
+    return undefined;
+  }
+  return city;
+}
+
+async function weatherDefault(config: Config): Promise<void> {
+  const city = resolveDefaultCity(config);
+  if (!city) {
     return;
   }
   await showWeather(city, config);
 }
 
+async function showForecast(city: City, config: Config): Promise<void> {
+  try {
+    const forecast = await getForecast(city, config.unit);
+    renderForecast(formatCity(city), forecast, config.unit);
+  } catch (error) {
+    printError((error as Error).message);
+  }
+}
+
+async function forecastDefault(config: Config): Promise<void> {
+  const city = resolveDefaultCity(config);
+  if (!city) {
+    return;
+  }
+  await showForecast(city, config);
+}
+
+async function forecastAll(config: Config): Promise<void> {
+  if (config.cities.length === 0) {
+    printError("No hay ciudades registradas. Usa la opción 2 para agregar una.");
+    return;
+  }
+  for (const city of config.cities) {
+    await showForecast(city, config);
+  }
+}
+
 async function weatherAll(config: Config): Promise<void> {
   if (config.cities.length === 0) {
-    printError("No hay ciudades registradas. Usa la opción 3 para agregar una.");
+    printError("No hay ciudades registradas. Usa la opción 2 para agregar una.");
     return;
   }
   console.log("");
@@ -98,7 +133,7 @@ async function removeCity(config: Config): Promise<void> {
 
 async function setDefaultCity(config: Config): Promise<void> {
   if (config.cities.length === 0) {
-    printError("No hay ciudades registradas. Usa la opción 3 para agregar una.");
+    printError("No hay ciudades registradas. Usa la opción 2 para agregar una.");
     return;
   }
   listCities(config);
@@ -132,24 +167,32 @@ async function main(): Promise<void> {
     const option = ask("Selecciona una opción: ");
 
     switch (option) {
-      case "1":
+      case "0":
         await weatherDefault(config);
         pause();
         break;
-      case "2":
+      case "1":
         await weatherAll(config);
         pause();
         break;
-      case "3":
+      case "2":
         await addCity(config);
         pause();
         break;
-      case "4":
+      case "3":
         await removeCity(config);
         pause();
         break;
-      case "5":
+      case "4":
         await setDefaultCity(config);
+        pause();
+        break;
+      case "5":
+        await forecastDefault(config);
+        pause();
+        break;
+      case "6":
+        await forecastAll(config);
         pause();
         break;
       case "8":

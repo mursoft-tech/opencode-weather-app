@@ -36,11 +36,13 @@ Esta es la apariencia que deseamos crear
 ════════════════════════════════════════
          WEATHER CLI
 ════════════════════════════════════════
-  1. Clima de ciudad default
-  2. Clima de todas las ciudades (1)
-  3. Buscar y agregar ciudad
-  4. Eliminar ciudad
-  5. Establecer ciudad default
+  0. Clima de ciudad default
+  1. Clima de todas las ciudades (1)
+  2. Buscar y agregar ciudad
+  3. Eliminar ciudad
+  4. Establecer ciudad default
+  5. Pronóstico 7 días (ciudad default)
+  6. Pronóstico 7 días (todas las ciudades)
   8. Ajustes (°C)
   9. Salir
 ════════════════════════════════════════
