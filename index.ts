@@ -1,6 +1,6 @@
 import { geocode, getWeather } from "./src/api.ts";
 import { loadConfig, saveConfig } from "./src/storage.ts";
-import { ask, pause, printError, renderMenu, unitSymbol } from "./src/ui.ts";
+import { ask, pause, printError, printSuccess, renderMenu, unitSymbol, yellow } from "./src/ui.ts";
 import type { City, Config } from "./src/types.ts";
 
 function formatCity(city: City): string {
@@ -21,7 +21,7 @@ function listCities(config: Config): void {
 async function showWeather(city: City, config: Config): Promise<void> {
   try {
     const temperature = await getWeather(city, config.unit);
-    console.log(`\n  ${formatCity(city)}: ${temperature.toFixed(1)} ${unitSymbol(config.unit)}`);
+    console.log(`\n  ${formatCity(city)}: ${yellow(`${temperature.toFixed(1)} ${unitSymbol(config.unit)}`)}`);
   } catch (error) {
     printError((error as Error).message);
   }
@@ -65,7 +65,7 @@ async function addCity(config: Config): Promise<void> {
     }
     config.cities.push(city);
     await saveConfig(config);
-    console.log(`\n  ✔ Ciudad agregada: ${formatCity(city)}`);
+    printSuccess(`Ciudad agregada: ${formatCity(city)}`);
   } catch (error) {
     printError((error as Error).message);
   }
@@ -93,7 +93,7 @@ async function removeCity(config: Config): Promise<void> {
     config.defaultCity = undefined;
   }
   await saveConfig(config);
-  console.log(`\n  ✔ Ciudad eliminada: ${formatCity(city)}`);
+  printSuccess(`Ciudad eliminada: ${formatCity(city)}`);
 }
 
 async function setDefaultCity(config: Config): Promise<void> {
@@ -115,13 +115,13 @@ async function setDefaultCity(config: Config): Promise<void> {
 
   config.defaultCity = city.name;
   await saveConfig(config);
-  console.log(`\n  ✔ Ciudad default: ${formatCity(city)}`);
+  printSuccess(`Ciudad default: ${formatCity(city)}`);
 }
 
 async function toggleUnit(config: Config): Promise<void> {
   config.unit = config.unit === "celsius" ? "fahrenheit" : "celsius";
   await saveConfig(config);
-  console.log(`\n  ✔ Unidad: ${unitSymbol(config.unit)}`);
+  printSuccess(`Unidad: ${unitSymbol(config.unit)}`);
 }
 
 async function main(): Promise<void> {
