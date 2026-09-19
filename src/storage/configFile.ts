@@ -1,11 +1,5 @@
-import type { Config, Unit } from "./types.ts";
-
-const CONFIG_PATH = `${process.cwd()}/weather-data.json`;
-
-const DEFAULT_CONFIG: Config = {
-  cities: [],
-  unit: "celsius",
-};
+import type { Config, Unit } from "../types/index.ts";
+import { CONFIG_PATH, DEFAULT_CONFIG } from "../utils/constants.ts";
 
 export async function loadConfig(): Promise<Config> {
   const file = Bun.file(CONFIG_PATH);

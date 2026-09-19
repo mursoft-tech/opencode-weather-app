@@ -4,11 +4,13 @@
 Console **weather CLI**. Prompts for cities, persists a default city + registered cities and unit, and can compile to a standalone executable.
 
 ## Structure
-- `index.ts` — entrypoint: main menu loop and option handlers.
-- `src/types.ts` — `City`, `Config`, `Unit` types.
-- `src/api.ts` — `geocode()`, `getWeather()`, and `getForecast()` (7-day daily forecast); exports the `DailyForecast` type.
-- `src/storage.ts` — `loadConfig()` / `saveConfig()` against `./weather-data.json`.
-- `src/ui.ts` — menu rendering, `ask()` / `pause()` prompts, `printError()` / `printSuccess()`, `renderForecast()` / `weatherDescription()` (WMO code → Spanish), and ANSI color helpers (`cyan()`, `yellow()`, `green()`, `red()`).
+- `src/index.ts` — entrypoint: main menu loop and option dispatch.
+- `src/actions/` — user-executable actions (`getWeather`, `getForecast`, `addCity`, `removeCity`, `setDefaultCity`, `listCities`, `toggleUnit`); `shared.ts` holds `resolveDefaultCity()`.
+- `src/presentation/` — CLI layer: `menu.ts` (render + option selection), `output.ts` (`clear`, `printError` / `printSuccess`, `renderForecast` / `weatherDescription`), `input.ts` (`ask` / `pause`).
+- `src/storage/` — `configFile.ts` (low-level `loadConfig()` / `saveConfig()` against `./weather-data.json`), `citiesStorage.ts` (`loadCities` / `saveCities` + default city), `settingsStorage.ts` (`loadSettings` / `saveSettings`).
+- `src/types/` — `City.ts`, `Config.ts` (`Config`, `Unit`, `Settings`), `Weather.ts` (`DailyForecast`), `MenuOption.ts`, plus a barrel `index.ts`.
+- `src/api/` — `geocoding.ts` (`geocode()`), `weather.ts` (`getWeather()`, `getForecast()` 7-day daily forecast).
+- `src/utils/` — `colors.ts` (ANSI helpers), `format.ts` (`unitSymbol`, `formatCity`, `formatDay`), `constants.ts` (`CONFIG_PATH`, `LINE`, `DAY_FORMAT`, `DEFAULT_CONFIG`), `cities.ts` (`findCity`).
 - `weather-data.json` — persisted state (gitignored); auto-created on first save.
 
 ## Stack / runtime
@@ -18,11 +20,11 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 
 ## Commands
 - Install deps: `bun install`
-- Run app: `bun run index.ts` (or `bun run start`)
+- Run app: `bun run src/index.ts` (or `bun run start`)
 - Dev with watch: `bun run dev`
 - Tests: `bun test` (Bun's built-in runner) — no tests exist yet.
 - Typecheck: `bunx --bun tsc --noEmit` (TypeScript 7 is present in `node_modules`).
-- Standalone binary (the README's stated end goal): `bun run build`, alias of `bun build --compile ./index.ts --outfile weather`.
+- Standalone binary (the README's stated end goal): `bun run build`, alias of `bun build --compile ./src/index.ts --outfile weather`.
 
 `package.json` defines only `start` / `dev` / `build`. There are **no lint or typecheck scripts**; do not assume `npm test` / `npm run lint` exist. Add scripts there if you introduce tooling.
 
@@ -31,12 +33,12 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 2. Current weather (use lat/lon from step 1): `https://api.open-meteo.com/v1/forecast?latitude=<lat>&longitude=<lon>&current=temperature_2m`
    - Add `&temperature_unit=fahrenheit` when the configured unit is Fahrenheit.
 3. 7-day forecast: same endpoint with `&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=auto&forecast_days=7`
-   - `weather_code` is a WMO code mapped to Spanish text in `src/ui.ts`; `precipitation_probability_max` is the daily rain chance (%).
+   - `weather_code` is a WMO code mapped to Spanish text in `src/presentation/output.ts`; `precipitation_probability_max` is the daily rain chance (%).
 
 ## Conventions
 - `tsconfig.json` is strict with `noUncheckedIndexedAccess: true`; index reads return `T | undefined` — handle it.
 - `moduleResolution: bundler`, `module: Preserve`, `noEmit`, `allowImportingTsExtensions` — import local files with `.ts` extensions.
-- `index.ts` is the entrypoint (`module` field in `package.json`).
+- `src/index.ts` is the entrypoint (`module` field in `package.json`).
 - No external dependencies: use Bun globals (`fetch`, `prompt`, `Bun.file`, `Bun.write`). Keep user-facing text in Spanish.
-- Colors are raw ANSI codes in `src/ui.ts`, gated by `process.stdout.isTTY` (`USE_COLOR`) so output stays clean when piped; reuse the exported helpers instead of inlining escape codes. Palette: cyan = menu/title, yellow = temperature, green = success, red = errors.
+- Colors are raw ANSI codes in `src/utils/colors.ts`, gated by `process.stdout.isTTY` (`USE_COLOR`) so output stays clean when piped; reuse the exported helpers instead of inlining escape codes. Palette: cyan = menu/title, yellow = temperature, green = success, red = errors.
 - Menu options: `0` default weather, `1` all cities, `2` add, `3` remove, `4` set default, `5` 7-day forecast (default), `6` 7-day forecast (all cities), `7` reserved (free), `8` toggle °C/°F, `9` exit.
