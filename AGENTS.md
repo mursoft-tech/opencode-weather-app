@@ -12,6 +12,7 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 - `src/api/` — `geocoding.ts` (`geocode()`), `weather.ts` (`getWeather()`, `getForecast()` 7-day daily forecast).
 - `src/utils/` — `colors.ts` (ANSI helpers), `format.ts` (`unitSymbol`, `formatCity`, `formatDay`), `constants.ts` (`CONFIG_PATH`, `LINE`, `DAY_FORMAT`, `DEFAULT_CONFIG`), `cities.ts` (`findCity`).
 - `weather-data.json` — persisted state (gitignored); auto-created on first save.
+- `src/tests/` — Bun test suite mirroring the source tree; `setup.ts` (preload) redirects `process.cwd()` to a temp dir so storage tests never touch the real `weather-data.json`, and `helpers.ts` stubs `fetch` / `prompt` and captures `console.log`.
 
 ## Stack / runtime
 - **Bun**, not Node. Use `bun` / `bunx`; do not use `npm`, `yarn`, or `node`.
@@ -22,11 +23,11 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 - Install deps: `bun install`
 - Run app: `bun run src/index.ts` (or `bun run start`)
 - Dev with watch: `bun run dev`
-- Tests: `bun test` (Bun's built-in runner) — no tests exist yet.
+- Tests: `bun test` (Bun's built-in runner) / `bun run test`; watch mode: `bun run test:watch`.
 - Typecheck: `bunx --bun tsc --noEmit` (TypeScript 7 is present in `node_modules`).
-- Standalone binary (the README's stated end goal): `bun run build`, alias of `bun build --compile ./src/index.ts --outfile weather`.
+- Standalone binary (the README's stated end goal): `bun run build`, which runs `bun test` first and aborts if any test fails, then `bun build --compile src/index.ts --outfile weather`.
 
-`package.json` defines only `start` / `dev` / `build`. There are **no lint or typecheck scripts**; do not assume `npm test` / `npm run lint` exist. Add scripts there if you introduce tooling.
+`package.json` defines `test` / `test:watch` / `build` / `start` / `dev`. There are still **no lint or typecheck scripts**; do not assume `npm run lint` exists.
 
 ## Weather API (per README)
 1. Geocoding: `https://geocoding-api.open-meteo.com/v1/search?name=<city>&count=1&language=es&format=json`
