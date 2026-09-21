@@ -29,6 +29,12 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 
 `package.json` defines `test` / `test:watch` / `build` / `start` / `dev`. There are still **no lint or typecheck scripts**; do not assume `npm run lint` exists.
 
+## Release (GitHub Actions)
+- `.github/workflows/release.yml` runs on push to `main` and on manual `workflow_dispatch`.
+- The tag/release name is `v<version>` taken from `package.json`'s `version` field; bump it to publish a new release.
+- If the tag already exists the workflow skips build and release, so pushes without a version bump don't fail.
+- Runs on `windows-latest` (binary is Windows x64). `bun run build` runs the tests, then `bun build --compile` produces `weather.exe`, which is attached to the GitHub release via `gh release create`.
+
 ## Weather API (per README)
 1. Geocoding: `https://geocoding-api.open-meteo.com/v1/search?name=<city>&count=1&language=es&format=json`
 2. Current weather (use lat/lon from step 1): `https://api.open-meteo.com/v1/forecast?latitude=<lat>&longitude=<lon>&current=temperature_2m`
