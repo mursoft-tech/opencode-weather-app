@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { resolveDefaultCity } from "../../actions/shared.ts";
-import type { Config } from "../../types/index.ts";
+import { resolveDefaultCity } from "../../src/actions/shared.ts";
+import type { Config } from "../../src/types/index.ts";
 import { captureConsoleLog } from "../helpers.ts";
 
 const base: Config = {

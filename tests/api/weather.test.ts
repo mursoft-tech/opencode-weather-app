@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { getForecast, getWeather } from "../../api/weather.ts";
-import type { City } from "../../types/index.ts";
+import { getForecast, getWeather } from "../../src/api/weather.ts";
+import type { City } from "../../src/types/index.ts";
 import type { FetchHandler } from "../helpers.ts";
 import { jsonResponse, stubFetch } from "../helpers.ts";
 

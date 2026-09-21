@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { formatCity, formatDay, unitSymbol } from "../../utils/format.ts";
+import { formatCity, formatDay, unitSymbol } from "../../src/utils/format.ts";
 
 describe("unitSymbol", () => {
   test("returns °C for celsius", () => {

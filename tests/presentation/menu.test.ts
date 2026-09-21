@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { renderMenu, selectOption } from "../../presentation/menu.ts";
-import type { Config } from "../../types/index.ts";
+import { renderMenu, selectOption } from "../../src/presentation/menu.ts";
+import type { Config } from "../../src/types/index.ts";
 import { captureConsoleLog, stubPrompt } from "../helpers.ts";
 
 const config: Config = {

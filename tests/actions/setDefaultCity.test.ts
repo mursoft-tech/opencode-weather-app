@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { setDefaultCity } from "../../actions/setDefaultCity.ts";
-import { loadDefaultCity } from "../../storage/citiesStorage.ts";
-import { saveConfig } from "../../storage/configFile.ts";
-import type { City, Config } from "../../types/index.ts";
+import { setDefaultCity } from "../../src/actions/setDefaultCity.ts";
+import { loadDefaultCity } from "../../src/storage/citiesStorage.ts";
+import { saveConfig } from "../../src/storage/configFile.ts";
+import type { City, Config } from "../../src/types/index.ts";
 import { captureConsoleLog, cleanConfigFile, stubPrompt } from "../helpers.ts";
 
 const madrid: City = { name: "Madrid", latitude: 40.4, longitude: -3.7 };

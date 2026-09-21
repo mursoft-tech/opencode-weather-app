@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { addCity } from "../../actions/addCity.ts";
-import { loadCities } from "../../storage/citiesStorage.ts";
-import type { Config } from "../../types/index.ts";
+import { addCity } from "../../src/actions/addCity.ts";
+import { loadCities } from "../../src/storage/citiesStorage.ts";
+import type { Config } from "../../src/types/index.ts";
 import {
   captureConsoleLog,
   cleanConfigFile,

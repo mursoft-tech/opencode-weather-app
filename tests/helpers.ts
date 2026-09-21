@@ -1,6 +1,6 @@
 import { spyOn } from "bun:test";
 import { rmSync } from "node:fs";
-import { CONFIG_PATH } from "../utils/constants.ts";
+import { CONFIG_PATH } from "../src/utils/constants.ts";
 
 export type FetchHandler = (url: string, init?: RequestInit) => Response | Promise<Response>;
 

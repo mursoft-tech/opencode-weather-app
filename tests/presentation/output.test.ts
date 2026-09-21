@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { printError, printSuccess, renderForecast, weatherDescription } from "../../presentation/output.ts";
-import type { DailyForecast } from "../../types/index.ts";
+import { printError, printSuccess, renderForecast, weatherDescription } from "../../src/presentation/output.ts";
+import type { DailyForecast } from "../../src/types/index.ts";
 import { captureConsoleLog } from "../helpers.ts";
 
 describe("weatherDescription", () => {

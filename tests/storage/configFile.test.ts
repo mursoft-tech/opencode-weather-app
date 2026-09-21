@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { loadConfig, saveConfig } from "../../storage/configFile.ts";
-import { CONFIG_PATH } from "../../utils/constants.ts";
+import { loadConfig, saveConfig } from "../../src/storage/configFile.ts";
+import { CONFIG_PATH } from "../../src/utils/constants.ts";
 import { cleanConfigFile } from "../helpers.ts";
 
 beforeEach(cleanConfigFile);

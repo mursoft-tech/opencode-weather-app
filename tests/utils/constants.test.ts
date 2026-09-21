@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DEFAULT_CONFIG, LINE } from "../../utils/constants.ts";
+import { DEFAULT_CONFIG, LINE } from "../../src/utils/constants.ts";
 
 describe("constants", () => {
   test("LINE is a 40 character separator", () => {

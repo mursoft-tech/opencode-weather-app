@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import type { Config } from "../../types/index.ts";
-import { findCity } from "../../utils/cities.ts";
+import type { Config } from "../../src/types/index.ts";
+import { findCity } from "../../src/utils/cities.ts";
 
 const config: Config = {
   cities: [

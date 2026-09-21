@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { ask, pause } from "../../presentation/input.ts";
+import { ask, pause } from "../../src/presentation/input.ts";
 import { stubPrompt } from "../helpers.ts";
 
 let promptStub: ReturnType<typeof stubPrompt> | undefined;

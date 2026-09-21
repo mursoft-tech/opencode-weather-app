@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { listCities } from "../../actions/listCities.ts";
-import type { Config } from "../../types/index.ts";
+import { listCities } from "../../src/actions/listCities.ts";
+import type { Config } from "../../src/types/index.ts";
 import { captureConsoleLog } from "../helpers.ts";
 
 const config: Config = {

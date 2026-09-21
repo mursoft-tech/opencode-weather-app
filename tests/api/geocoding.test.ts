@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { geocode } from "../../api/geocoding.ts";
+import { geocode } from "../../src/api/geocoding.ts";
 import type { FetchHandler } from "../helpers.ts";
 import { jsonResponse, stubFetch } from "../helpers.ts";
 

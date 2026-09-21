@@ -12,7 +12,7 @@ Console **weather CLI**. Prompts for cities, persists a default city + registere
 - `src/api/` — `geocoding.ts` (`geocode()`), `weather.ts` (`getWeather()`, `getForecast()` 7-day daily forecast).
 - `src/utils/` — `colors.ts` (ANSI helpers), `format.ts` (`unitSymbol`, `formatCity`, `formatDay`), `constants.ts` (`CONFIG_PATH`, `LINE`, `DAY_FORMAT`, `DEFAULT_CONFIG`), `cities.ts` (`findCity`).
 - `weather-data.json` — persisted state (gitignored); auto-created on first save.
-- `src/tests/` — Bun test suite mirroring the source tree; `setup.ts` (preload) redirects `process.cwd()` to a temp dir so storage tests never touch the real `weather-data.json`, and `helpers.ts` stubs `fetch` / `prompt` and captures `console.log`.
+- `tests/` — Bun test suite mirroring `src/`; `setup.ts` (preload) redirects `process.cwd()` to a temp dir so storage tests never touch the real `weather-data.json`, and `helpers.ts` stubs `fetch` / `prompt` and captures `console.log`.
 
 ## Stack / runtime
 - **Bun**, not Node. Use `bun` / `bunx`; do not use `npm`, `yarn`, or `node`.

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { cyan, green, red, yellow } from "../../utils/colors.ts";
+import { cyan, green, red, yellow } from "../../src/utils/colors.ts";
 
 const ESCAPE_PATTERN = /\x1b\[[0-9;]*m/g;
 const colorHelpers: Array<[string, (text: string) => string]> = [
